@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /*
+      Thanks Cuneyt Celebican (2406 fall 2017) for the @media style sheet
+    */
+    #chat-container {
+      display: flex;
+      flex-direction: column;
+      width: 90vw; /* Fixed width */
+      height: 95vh; /* Fixed height */
+      max-width: 800px; /* Prevents it from getting too large */
+      max-height: 700px;
+      min-width: 400px; /* Prevents it from getting too small */
+      min-height: 500px;
+      margin: auto; /* Center it */
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%); /* Perfect centering */
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      background-color: white;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+    }
+
+    @media (max-width: 1500px) {
+      body {
+        font-family: 'Roboto', cursive;
+        font-size: 18px;
+        padding: 15px;
+        margin: 0px;
+      }
+     
+      input#msgBox {
+        width: -webkit-calc(100% - 24px);
+        width: -moz-calc(100% - 24px);
+        width: calc(100% - 24px);
+        margin-top: 10px;
+        display: block;
+        padding: 10px;
+      }
+
+      input[type="button"] {
+        display: block;
+        margin-top: 10px;
+        border: none;
+        border-radius: 5px;
+        color: #fff;
+        font-weight: 700;
+        text-transform: uppercase;
+        padding: 10px;
+      }
+
+      h2 {
+        color: #0a86e6; /* Change to blue */
+        font-size: 30px; /* Optional: Adjust font size */
+        font-family: cursive;
+        text-align: center; /* Optional: Center align */
+        font-weight: bold; /* Make it bold */
+      }
+
+      #connect_button {
+        margin-left: 2px; 
+        background: #0a86e6;
+        width: 99.5%;
+      }
+
+      /* Active send button (blue) */
+      #send_button {
+        background:#97a0a7;
+        width: 25%;
+      }
+
+      /* Container for messages */
+      div#messages {
+        display: block;
+        min-height: 100px;
+        overflow-y: auto;
+        margin-bottom: 10px;
+        padding: 10px; /* Add padding to avoid messages sticking to edges */
+      }
+
+      /* Style for individual messages */
+      div#messages > div {
+        background: #e8e8e8;
+        padding: 10px;
+        border-radius: 5px;
+        border-bottom: 1px solid #fafafa;
+        margin-bottom: 10px;
+        max-width: 80%;
+        display: block; 
+        word-wrap: break-word; /* Make sure long words break nicely */
+        line-height: 1.5; /* Set line height for better readability */
+        width: fit-content; /* Let the message size dynamically adjust */
+      }
+
+       /* Style for messages from the user (right-aligned) */
+      .user-align {
+        color: blue;
+        margin-left: auto;
+        margin-right: 10px;
+        text-align: right;
+      }
+
+      /* Style for messages from others (left-aligned) */
+      .other-align {
+        color: black;
+        margin-left: 10px;
+        margin-right: auto;
+        text-align: left;
+      }
+
+      /* Move elements off the screen */
+      .move-out {
+        transform: translateY(-100px); /* Move it above the screen */
+        opacity: 0; /* Make it invisible */
+        transition: transform 0.5s ease, opacity 0.5s ease; /* Smooth transition */
+        position: absolute; /* Prevents it from affecting layout */
+      }
+
+      /* Container to align input and button side by side */
+      .input-container {
+        margin-left: 3px; 
+        display: flex;
+        flex-shrink: 0; /* Prevents shrinking */
+        align-items: center; /* Align items vertically */
+        gap: 10px; /* Space between input and button */
+        width: 100%; /* Full width */
+        margin-bottom: 15px;
+        padding-bottom: 10px; /* Extra space */
+      }
+
+      #errorContainer {
+        color: red;
+        font-weight: bold;
+        margin-bottom: 10px; /* Add spacing before chat messages */
+      }
+
+      /* Active send button (blue) */
+      #clear_button {
+        margin-right: 5px; 
+        background:#97a0a7;
+        width: 25%;
+      }
+
+      label[for="usernameBox"] {
+        margin-left: 2px; 
+        color: #0a86e6; /* Change text color */
+        font-weight: bold;
+        font-size: 20px;
+      }
+
+      /* Style for the "Messages" label */
+      p strong {
+        margin-left: 2px; 
+        color: #0be95d; /* Change color to green */
+        font-size: 20px;
+        font-weight: bold;
+      }
+
+      .private-message {
+          color:#02752cfb;
+      }
+
+    }
+  </style>
+</head>
+<body>
+
+  <div id="chat-container">
+    <h2>Chat Application</h2>
+
+    <label for="usernameBox">Enter Username:</label>
+    <input type="text" id="usernameBox" placeholder="Your username">
+    <input type="button" id="connect_button" value="Connect As">
+
+    <p><strong>Messages:</strong></p>
+
+    <div id="errorContainer"></div> <!-- Error messages will go here -->
+    <div id="messages" style="display:none;"></div>
+
+    <div class="input-container">
+      <input type="text" placeholder="Send a message" id="msgBox" disabled>
+      <input type="button" id="send_button" value="Send" disabled>
+      <input type="button" id="clear_button" value="Clear" disabled>
+    </div>
+
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src='chatClient.js'></script>
+</body>
+</html>
